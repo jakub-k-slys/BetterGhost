@@ -1,0 +1,27 @@
+name: Make new release
+on:
+  push:
+    paths:
+      - 'released-versions/*'
+jobs:
+  get-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
+      - name: Setup release version
+        run: |
+          echo "LATEST_VERSION=$(cat released-versions/latest.txt)" >> $GITHUB_ENV
+      - name: Fetch latest released version
+        run: |
+          wget https://api.github.com/repos/TryGhost/Ghost/tarball/${{ env.LATEST_VERSION }} -o ghost.tar.gz
+          mv ghost.tar.gz better-ghost-${{ env.LATEST_VERSION }}.tar.gz
+      - name: Make new release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.LATEST_VERSION }}
+          name: ${{ env.LATEST_VERSION }}
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
+          files: |
+            better-ghost-${{ env.LATEST_VERSION }}.tar.gz
