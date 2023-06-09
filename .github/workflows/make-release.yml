@@ -15,7 +15,7 @@ jobs:
       - name: Setup release version
         run: |
           echo "LATEST_VERSION=$(cat released-versions/latest.txt)" >> $GITHUB_ENV
-          echo ${{ env.LATEST_VERSION }}
+          echo $LATEST_VERSION
       - name: Fetch latest released version
         run: |
           wget https://api.github.com/repos/TryGhost/Ghost/tarball/${{ env.LATEST_VERSION }} -o ghost.tar.gz
