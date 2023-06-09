@@ -14,7 +14,7 @@ jobs:
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
       - name: Setup release version
         run: |
-          echo "LATEST_VERSION = $(cat released-versions/latest.txt)" >> $GITHUB_ENV
+          echo "LATEST_VERSION=$(cat released-versions/latest.txt)" >> $GITHUB_ENV
           echo ${{ env.LATEST_VERSION }}
       - name: Fetch latest released version
         run: |
