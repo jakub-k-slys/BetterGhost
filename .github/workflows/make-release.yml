@@ -1,0 +1,14 @@
+name: Make new release
+on:
+  push:
+    paths:
+      - 'released-versions/*'
+env:
+  LATEST_VERSION: cat released-versions/latest.txt
+jobs:
+  get-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch latest released version
+        run: |
+          wget https://api.github.com/repos/TryGhost/Ghost/tarball/$LATEST_VERSION
