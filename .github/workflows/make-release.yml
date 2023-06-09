@@ -19,5 +19,7 @@ jobs:
           mv ghost.tar.gz better-ghost-${{ env.LATEST_VERSION }}.tar.gz
       - uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ env.LATEST_VERSION }}
+          name: ${{ env.LATEST_VERSION }}
           files: |
             better-ghost-${{ env.LATEST_VERSION }}.tar.gz
