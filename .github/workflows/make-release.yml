@@ -4,11 +4,15 @@ on:
     paths:
       - 'released-versions/*'
 env:
-  LATEST_VERSION: cat released-versions/latest.txt
+  LATEST_VERSION: ''
 jobs:
   get-version:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup release version
+        run: |
+          $LATEST_VERSION=$(cat released-versions/latest.txt)
+          echo $LATEST_VERSION
       - name: Fetch latest released version
         run: |
-          wget https://api.github.com/repos/TryGhost/Ghost/tarball/$LATEST_VERSION
+          wget https://api.github.com/repos/TryGhost/Ghost/tarball/$LATEST_VERSION -o ghost.tar.gz
