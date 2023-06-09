@@ -19,3 +19,18 @@ jobs:
       - name: Fetch latest released version
         run: |
           wget https://api.github.com/repos/TryGhost/Ghost/tarball/$LATEST_VERSION -o ghost.tar.gz
+          mv ghost.tar.gz better-ghost-$LATEST_VERSION.tar.gz
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: $LATEST_VERSION
+          release_name: Release $LATEST_VERSION
+          body: |
+            Changes in this Release
+            - tbd
+          draft: false
+          prerelease: false        
+          artifacts: 'better-ghost-$LATEST_VERSION.tar.gz'
