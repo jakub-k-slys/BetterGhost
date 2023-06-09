@@ -1,12 +1,12 @@
 name: Get latest release version
 on:
   schedule:
-    - cron:  '0 10 * * *'
+    - cron:  '15 * * * *'
 jobs:
   get-version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
       - name: Fetch release version
