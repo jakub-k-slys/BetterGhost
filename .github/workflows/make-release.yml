@@ -14,7 +14,7 @@ jobs:
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
       - name: Setup release version
         run: |
-          LATEST_VERSION = $(cat released-versions/latest.txt)
+          export LATEST_VERSION = $(cat released-versions/latest.txt)
           echo $LATEST_VERSION
       - name: Fetch latest released version
         run: |
