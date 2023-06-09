@@ -9,6 +9,9 @@ jobs:
   get-version:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
       - name: Setup release version
         run: |
           $LATEST_VERSION=$(cat released-versions/latest.txt)
