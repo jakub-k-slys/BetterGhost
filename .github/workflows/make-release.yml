@@ -15,9 +15,18 @@ jobs:
           echo "LATEST_VERSION=$(cat released-versions/latest.txt)" >> $GITHUB_ENV
       - name: Fetch latest released version
         run: |
-          wget https://api.github.com/repos/TryGhost/Ghost/tarball/${{ env.LATEST_VERSION }} -o ghost.tar.gz
-          mv ghost.tar.gz better-ghost-${{ env.LATEST_VERSION }}.tar.gz
-      - name: Make new release
+          wget https://api.github.com/repos/TryGhost/Ghost/tarball/${{ env.LATEST_VERSION }} -O ghost.tar.gz
+      - name: Unpack vanilla release
+        run: |
+          tar -xvzf ghost.tar.gz
+      - name: Patch vanilla release
+        run: |
+          cd TryGhost-Ghost-*
+          patch -p0 < ../configurable-batch-size.diff
+      - name: Archive patched version
+        run: |
+          tar -cvzf better-ghost-${{ env.LATEST_VERSION }}.tar.gz TryGhost-Ghost-*
+      - name: Publish new release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.LATEST_VERSION }}
