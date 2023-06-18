@@ -9,10 +9,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          repository: TryGhost/Ghost
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
+          path: './BetterGhost'
       - name: Setup release version
         run: |
-          echo "LATEST_VERSION=$(cat released-versions/latest.txt)" >> $GITHUB_ENV
+          echo "LATEST_VERSION=$(cat BetterGhost/released-versions/latest.txt)" >> $GITHUB_ENV
       - name: Fetch latest released version
         run: |
           wget https://api.github.com/repos/TryGhost/Ghost/tarball/${{ env.LATEST_VERSION }} -O ghost.tar.gz
