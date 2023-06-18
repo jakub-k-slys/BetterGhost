@@ -23,9 +23,32 @@ jobs:
         run: |
           cd TryGhost-Ghost-*
           patch -p0 < ../configurable-batch-size.diff
-      - name: Archive patched version
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        env:
+          FORCE_COLOR: 0
+        with:
+          node-version: '18.12.1'
+          cache: yarn
+      - name: Run yarn 
+        run: | 
+          cd TryGhost-Ghost-*
+          yarn
+      - name: Run yarn main:submodules
         run: |
-          tar -cvzf better-ghost-${{ env.LATEST_VERSION }}.tar.gz TryGhost-Ghost-*
+          cd TryGhost-Ghost-*
+          yarn main:submodules
+      - name: Apply patch
+        run: |
+          cd TryGhost-Ghost-*
+          patch -p0 < ../configurable-batch-size.diff
+      - name: Create tarball
+        run: |
+          cd TryGhost-Ghost-*/ghost/core
+          npm pack
+#      - name: Archive patched version
+#        run: |
+#          tar -cvzf better-ghost-${{ env.LATEST_VERSION }}.tar.gz TryGhost-Ghost-*
       - name: Publish new release
         uses: softprops/action-gh-release@v1
         with:
@@ -33,4 +56,4 @@ jobs:
           name: ${{ env.LATEST_VERSION }}
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           files: |
-            better-ghost-${{ env.LATEST_VERSION }}.tar.gz
+            TryGhost-Ghost-*/ghost/core/ghost-*.tar.gz
