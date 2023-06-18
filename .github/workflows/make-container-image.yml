@@ -2,6 +2,7 @@ name: Deploy Images to GHCR
 on:
   release:
     types: [published]
+  workflow_dispatch:
 jobs:
   create-image:
     runs-on: ubuntu-latest
