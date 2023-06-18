@@ -30,6 +30,7 @@ jobs:
         with:
           node-version: '18.12.1'
           cache: yarn
+          cache-dependency-path: ./TryGhost-Ghost-*/yarn.lock
       - name: Run yarn 
         run: | 
           cd TryGhost-Ghost-*
