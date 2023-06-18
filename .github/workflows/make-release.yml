@@ -22,10 +22,14 @@ jobs:
           echo "LATEST_VERSION=$(cat ./BetterGhost/released-versions/latest.txt)" >> $GITHUB_ENV
       - uses: actions/checkout@v3
         with:
-          clean: false
           repository: TryGhost/Ghost
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           ref: ${{ env.LATEST_VERSION }}
+      - uses: actions/checkout@v3
+        with:
+          repository: jakub-k-slys/BetterGhost
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
+          path: 'BetterGhost'
 #      - name: Checkout latest version
 #        run: |
 #          git checkout ${{ env.LATEST_VERSION }}
