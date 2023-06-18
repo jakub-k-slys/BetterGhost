@@ -9,12 +9,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: TryGhost/Ghost
-          token: ${{ secrets.REPO_SCOPED_TOKEN }}
-      - uses: actions/checkout@v3
-        with:
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           path: './BetterGhost'
+      - uses: actions/checkout@v3
+        with:
+          repository: TryGhost/Ghost
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
       - name: Set up Git
         run: |
           git config --global pull.rebase true
