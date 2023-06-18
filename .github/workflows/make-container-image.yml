@@ -1,0 +1,30 @@
+name: Deploy Images to GHCR
+on:
+  release:
+    types: [published]
+jobs:
+  create-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git
+        run: |
+          git config --global pull.rebase true
+          git config --global user.name "XYZ"
+          git config --global user.email "ghost@example.com"
+      - uses: actions/checkout@v3
+        with:
+          repository: jakub-k-slys/BetterGhost
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
+      - name: Setup release version
+        run: |
+          echo "LATEST_VERSION=$(cat ./released-versions/latest.txt)" >> $GITHUB_ENV
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.REPO_SCOPED_TOKEN }}
+      - name: 'Build container image'
+        run: |
+          docker build . --build-arg GHOST_VERSION=${{ env.LATEST_VERSION }} --tag ghcr.io/jakub-k-slys/BetterGhost:latest --tag ghcr.io/jakub-k-slys/BetterGhost:${{ env.LATEST_VERSION }}
+          docker push ghcr.io/jakub-k-slys/BetterGhost:${{ env.LATEST_VERSION }}
