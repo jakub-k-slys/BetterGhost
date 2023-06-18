@@ -15,19 +15,26 @@ jobs:
         with:
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           path: './BetterGhost'
+      - name: Set up Git
+        run: |
+          git config --global pull.rebase true
+          git config --global user.name "XYZ"
+          git config --global user.email "ghost@example.com"
       - name: Setup release version
         run: |
           echo "LATEST_VERSION=$(cat BetterGhost/released-versions/latest.txt)" >> $GITHUB_ENV
-      - name: Fetch latest released version
+      - name: Checkout latest version
         run: |
-          wget https://api.github.com/repos/TryGhost/Ghost/tarball/${{ env.LATEST_VERSION }} -O ghost.tar.gz
-      - name: Unpack vanilla release
-        run: |
-          tar -xvzf ghost.tar.gz
+          git checkout ${{ env.LATEST_VERSION }}
+#      - name: Fetch latest released version
+#        run: |
+#          wget https://api.github.com/repos/TryGhost/Ghost/tarball/${{ env.LATEST_VERSION }} -O ghost.tar.gz
+#      - name: Unpack vanilla release
+#        run: |
+#          tar -xvzf ghost.tar.gz
       - name: Patch vanilla release
         run: |
-          cd TryGhost-Ghost-*
-          patch -p0 < ../configurable-batch-size.diff
+          patch -p0 < BetterGhost/configurable-batch-size.diff
       - name: Setup Node
         uses: actions/setup-node@v3
         env:
@@ -35,23 +42,15 @@ jobs:
         with:
           node-version: '18.12.1'
           cache: yarn
-          cache-dependency-path: ./TryGhost-Ghost-*/yarn.lock
       - name: Run yarn 
         run: | 
-          cd TryGhost-Ghost-*
           yarn
       - name: Run yarn main:submodules
         run: |
-          cd TryGhost-Ghost-*
           yarn main:submodules
-      - name: Apply patch
-        run: |
-          cd TryGhost-Ghost-*
-          patch -p0 < ../configurable-batch-size.diff
       - name: Create tarball
-        run: |
-          cd TryGhost-Ghost-*/ghost/core
-          npm pack
+        run: npm pack
+        working-directory: ghost/core
 #      - name: Archive patched version
 #        run: |
 #          tar -cvzf better-ghost-${{ env.LATEST_VERSION }}.tar.gz TryGhost-Ghost-*
@@ -62,4 +61,4 @@ jobs:
           name: ${{ env.LATEST_VERSION }}
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           files: |
-            TryGhost-Ghost-*/ghost/core/ghost-*.tar.gz
+            ghost/core/ghost-*.tgz
