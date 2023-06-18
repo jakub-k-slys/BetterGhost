@@ -4,7 +4,7 @@ on:
     paths:
       - 'released-versions/*'
 jobs:
-  get-version:
+  create-release:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Git
@@ -30,15 +30,6 @@ jobs:
           repository: jakub-k-slys/BetterGhost
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           path: 'BetterGhost'
-#      - name: Checkout latest version
-#        run: |
-#          git checkout ${{ env.LATEST_VERSION }}
-#      - name: Fetch latest released version
-#        run: |
-#          wget https://api.github.com/repos/TryGhost/Ghost/tarball/${{ env.LATEST_VERSION }} -O ghost.tar.gz
-#      - name: Unpack vanilla release
-#        run: |
-#          tar -xvzf ghost.tar.gz
       - name: Patch vanilla release
         run: |
           patch -p0 < BetterGhost/configurable-batch-size.diff
@@ -56,9 +47,6 @@ jobs:
       - name: Create tarball
         run: npm pack
         working-directory: ghost/core
-#      - name: Archive patched version
-#        run: |
-#          tar -cvzf better-ghost-${{ env.LATEST_VERSION }}.tar.gz TryGhost-Ghost-*
       - name: Publish new release
         uses: softprops/action-gh-release@v1
         with:
