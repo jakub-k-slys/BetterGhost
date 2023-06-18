@@ -27,5 +27,5 @@ jobs:
           password: ${{ secrets.REPO_SCOPED_TOKEN }}
       - name: 'Build container image'
         run: |
-          docker build . --build-arg GHOST_VERSION=${{ env.LATEST_VERSION }} --tag ghcr.io/jakub-k-slys/BetterGhost:latest --tag ghcr.io/jakub-k-slys/BetterGhost:${{ env.LATEST_VERSION }}
-          docker push ghcr.io/jakub-k-slys/BetterGhost:${{ env.LATEST_VERSION }}
+          docker build . --build-arg GHOST_VERSION=${{ env.LATEST_VERSION }} --tag ghcr.io/jakub-k-slys/betterghost:latest --tag ghcr.io/jakub-k-slys/betterghost:${{ env.LATEST_VERSION }}
+          docker push ghcr.io/jakub-k-slys/betterghost:${{ env.LATEST_VERSION }}
