@@ -5,7 +5,6 @@ on:
   workflow_dispatch:
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
@@ -13,6 +12,9 @@ jobs:
       contents: read
       packages: write
     steps:
+      - name: Prepare image name
+        run: |
+          echo IMAGE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
       - name: Set up Git
         run: |
           git config --global pull.rebase true
@@ -45,6 +47,8 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.LATEST_VERSION }}, ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.LATEST_VERSION }} 
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           labels: ${{ steps.meta.outputs.labels }}
           build-args: GHOST_VERSION=${{ env.LATEST_VERSION }}
