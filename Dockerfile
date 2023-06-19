@@ -26,7 +26,7 @@ RUN mkdir -p /tmp/bitnami/pkg/cache/ && cd /tmp/bitnami/pkg/cache/ && \
       "python-3.9.17-0-linux-${OS_ARCH}-debian-11" \
       "node-16.20.0-3-linux-${OS_ARCH}-debian-11" \
       "mysql-client-10.11.4-0-linux-${OS_ARCH}-debian-11" \
-      "ghost-${GHOST_VERSION}-0-linux-${OS_ARCH}-debian-11" \
+      "ghost-${GHOST_VERSION:1}-0-linux-${OS_ARCH}-debian-11" \
     ) && \
     for COMPONENT in "${COMPONENTS[@]}"; do \
       if [ ! -f "${COMPONENT}.tar.gz" ]; then \
