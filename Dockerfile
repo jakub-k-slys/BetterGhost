@@ -40,8 +40,8 @@ RUN mkdir -p /tmp/bitnami/pkg/cache/ && cd /tmp/bitnami/pkg/cache/ && \
 
 RUN mkdir -p /tmp/bitnami/pkg/cache/ && cd /tmp/bitnami/pkg/cache/ && \
     curl -kSsLf "https://github.com/jakub-k-slys/BetterGhost/releases/download/${GHOST_VERSION}/ghost-${GHOST_VERSION:1}.tgz" -O && \
-    tar -zxf ghost-${GHOST_VERSION}.tgz && \
-    cp -vr package/* /opt/bitnami/ghost/versions/${GHOST_VERSION}/ && \
+    tar -zxf ghost-${GHOST_VERSION:1}.tgz && \
+    cp -vr package/* /opt/bitnami/ghost/versions/${GHOST_VERSION:1}/ && \
     rm -rf package
 
 RUN apt-get update && apt-get upgrade -y && \
