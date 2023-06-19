@@ -39,7 +39,7 @@ RUN mkdir -p /tmp/bitnami/pkg/cache/ && cd /tmp/bitnami/pkg/cache/ && \
     done
 
 RUN mkdir -p /tmp/bitnami/pkg/cache/ && cd /tmp/bitnami/pkg/cache/ && \
-    curl -kSsLf "https://github.com/jakub-k-slys/BetterGhost/releases/download/v${GHOST_VERSION}/ghost-${GHOST_VERSION}.tgz" -O && \
+    curl -kSsLf "https://github.com/jakub-k-slys/BetterGhost/releases/download/${GHOST_VERSION}/ghost-${GHOST_VERSION:1}.tgz" -O && \
     tar -zxf ghost-${GHOST_VERSION}.tgz && \
     cp -vr package/* /opt/bitnami/ghost/versions/${GHOST_VERSION}/ && \
     rm -rf package
