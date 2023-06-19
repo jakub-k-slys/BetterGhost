@@ -10,7 +10,8 @@ LABEL org.opencontainers.image.base.name="docker.io/bitnami/minideb:bullseye" \
       org.opencontainers.image.ref.name="${GHOST_VERSION}-debian-11-r0" \
       org.opencontainers.image.title="ghost" \
       org.opencontainers.image.vendor="Slys" \
-      org.opencontainers.image.version=${GHOST_VERSION}
+      org.opencontainers.image.version=${GHOST_VERSION} \
+      org.opencontainers.image.source=https://github.com/jakub-k-slys/BetterGhost
 
 ENV HOME="/" \
     OS_ARCH="${TARGETARCH:-amd64}" \
