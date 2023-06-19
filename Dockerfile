@@ -31,18 +31,18 @@ RUN mkdir -p /tmp/bitnami/pkg/cache/ && cd /tmp/bitnami/pkg/cache/ && \
     for COMPONENT in "${COMPONENTS[@]}"; do \
       if [ ! -f "${COMPONENT}.tar.gz" ]; then \
         curl -kSsLf "https://downloads.bitnami.com/files/stacksmith/${COMPONENT}.tar.gz" -O ; \
-#        curl -kSsLf "https://downloads.bitnami.com/files/stacksmith/${COMPONENT}.tar.gz.sha256" -O ; \
+        curl -kSsLf "https://downloads.bitnami.com/files/stacksmith/${COMPONENT}.tar.gz.sha256" -O ; \
       fi && \
-#     sha256sum -c "${COMPONENT}.tar.gz.sha256" && \
+     sha256sum -c "${COMPONENT}.tar.gz.sha256" && \
       tar -zxf "${COMPONENT}.tar.gz" -C /opt/bitnami --strip-components=2 --no-same-owner --wildcards '*/files' && \
       rm -rf "${COMPONENT}".tar.gz{,.sha256} ; \
     done
 
-#RUN mkdir -p /tmp/bitnami/pkg/cache/ && cd /tmp/bitnami/pkg/cache/ && \
-#    curl -kSsLf "https://github.com/jakub-k-slys/BetterGhost/releases/download/v${GHOST_VERSION}/ghost-${GHOST_VERSION}.tgz" -O && \
-#    tar -zxf ghost-${GHOST_VERSION}.tgz && \
-#    cp -vr package/* /opt/bitnami/ghost/versions/${GHOST_VERSION}/ && \
-#    rm -rf package
+RUN mkdir -p /tmp/bitnami/pkg/cache/ && cd /tmp/bitnami/pkg/cache/ && \
+    curl -kSsLf "https://github.com/jakub-k-slys/BetterGhost/releases/download/v${GHOST_VERSION}/ghost-${GHOST_VERSION}.tgz" -O && \
+    tar -zxf ghost-${GHOST_VERSION}.tgz && \
+    cp -vr package/* /opt/bitnami/ghost/versions/${GHOST_VERSION}/ && \
+    rm -rf package
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get clean && rm -rf /var/lib/apt/lists /var/cache/apt/archives
