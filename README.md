@@ -1,1 +1,1 @@
-# BetterGhost
+# Better Ghost
